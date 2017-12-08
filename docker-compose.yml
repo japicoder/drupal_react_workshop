@@ -1,0 +1,56 @@
+version: "2"
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_USER: 'drw'
+      MYSQL_PASSWORD: 'drwtestpass'
+      MYSQL_DATABASE: 'drw'
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    restart: on-failure
+    volumes_from:
+      - dbfiles
+    volumes:
+      - ./assets/mysql:/etc/mysql/conf.d
+      - ./logs/mysql:/var/log/mysql/
+
+  dbfiles:
+    image: busybox
+    volumes:
+      - /var/lib/mysql
+
+  webfiles:
+    image: busybox
+    volumes:
+      - ./webserver/:/var/www/drw
+
+  webserver:
+    build:
+      context: ./drw_docker
+    dns:
+      - 8.8.8.8
+    ports:
+      - 3000:3000
+      - 3001:3001
+    volumes:
+      - ./logs/php:/var/www/drw/logs
+    volumes_from:
+      - webfiles
+    links:
+      - db
+    restart: on-failure
+    labels:
+      - "traefik.port=80"
+      - "traefik.docker.network"
+      - "traefik.backend=webserver"
+      - "traefik.frontend.rule=Host:drw.localhost"
+      - "traefik.frontend.entryPoints=http,ws,https,wss"
+      - 'traefik.websocket.protocol=ws'
+      - 'traefik.websocket.port=3000'
+      - 'traefik.websocket.frontend.entryPoints=ws,wss'
+
+networks:
+  default:
+    external:
+      name: traefik_default
