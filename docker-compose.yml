@@ -23,7 +23,7 @@ services:
   webfiles:
     image: busybox
     volumes:
-      - ./webserver/:/var/www/drw
+      - ./drw/:/var/www/drw
 
   webserver:
     build:
