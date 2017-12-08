@@ -44,8 +44,11 @@ You will now have some important directories:
    * drw - maps to /var/www/drw on the container.
    * logs stores the different logs needed for the project.
 
-To access to the webserver docker, use: ``docker exec -u 1000 -it drupalreactworkshop_webserver_1 bash
+### Drupal installation
+   * To access to the webserver docker, use: ``docker exec -u 1000 -it drupalreactworkshop_webserver_1 bash
 ``
+   * Access to the webserver directory: ``cd /var/www/drw``
+   * Update all the project dependencies: ``composer update``
 
 ### Database
    * DB name: drw
