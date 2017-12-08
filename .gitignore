@@ -1,0 +1,9 @@
+# Ignore logs content but consider folder with gitkeep file.
+logs/*
+!logs/.gitkeep
+web/libraries/*
+!web/libraries/.gitkeep
+backups/*
+!backups/README.md
+.idea
+.DS_Store
