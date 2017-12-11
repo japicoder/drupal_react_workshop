@@ -30,7 +30,7 @@ Those containers will be linked together and to your host machine, avoiding any 
    * Execute `docker-compose up -d`. This should keep this console tied to the containers. It also creates them if any of them is missing. In future attempts, you can use `docker-compose start` instead, as it doesn't lock any console. However, if you use 'start' and any container is missing on `docker ps`, you should better return to use `docker-compose up` command again, to force a reload of containers while being able to see logs directly.
    * If everything worked, on traefik you can also check that the containers are running. Alternatively `docker ps` will display them as well.
    * Now, set/check the right permissions to drw folder:
-     * First option: enter inside backend container, executing `docker exec -ti drupalreactworkshop_webserver_1` and:
+     * First option: enter inside backend container, executing `docker exec -ti drupalreactworkshop_webserver_1 bash` and:
         * Doing a `ls -la` inside /var/www/drw should reveal the user that owns those files. It should be www-data:www-data.
         * If it isn't, make sure inside the backend container the group www-data exists.
         * Then inside the container: `sudo chown -R www-data:www-data /var/www/drw/`
@@ -54,8 +54,10 @@ You will now have some important directories:
    * DB name: drw
    * DB user: drw
    * DB pass: drwtestpass
+   * DB hostname: db
    
 ### Drupal console
    In case you're running out with problems when executing `drupal --version`, follow this steps:
    * composer update drupal/console --with-dependencies
    * Install as global: https://docs.drupalconsole.com/en/getting/launcher.html
+   
