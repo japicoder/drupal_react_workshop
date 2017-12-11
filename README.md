@@ -54,3 +54,8 @@ You will now have some important directories:
    * DB name: drw
    * DB user: drw
    * DB pass: drwtestpass
+   
+### Drupal console
+   In case you're running out with problems when executing `drupal --version`, follow this steps:
+   * composer update drupal/console --with-dependencies
+   * Install as global: https://docs.drupalconsole.com/en/getting/launcher.html
