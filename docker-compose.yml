@@ -20,6 +20,19 @@ services:
     volumes:
       - /var/lib/mysql
 
+  pma:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - db
+    environment:
+      PHP_UPLOAD_MAX_FILESIZE: 1G
+      PHP_POST_MAX_SIZE: 1G
+      UPLOAD_SIZE: 1G
+      PHP_MAX_INPUT_VARS: 1G
+    labels:
+      - "traefik.frontend.rule=Host:drw-db.localhost"
+      - "traefik.docker.network"
+
   webfiles:
     image: busybox
     volumes:
@@ -49,6 +62,19 @@ services:
       - 'traefik.websocket.protocol=ws'
       - 'traefik.websocket.port=3000'
       - 'traefik.websocket.frontend.entryPoints=ws,wss'
+
+  swagger:
+    image: swaggerapi/swagger-editor
+    environment:
+      API_URL: "http://drw.localhost/openapi/entities?_format=json"
+    restart: on-failure
+    links:
+      - webserver
+    labels:
+      - "traefik.port=8080"
+      - "traefik.backend=swagger"
+      - "traefik.frontend.rule=Host:drw-swagger.localhost"
+      - "traefik.docker.network"
 
 networks:
   default:
